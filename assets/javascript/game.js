@@ -12,12 +12,8 @@ var characters = "abcdefghijklmnopqrstuvwxyz";
 var correctWord = chooseRandomWord();
 var correctGuesses;
 
-document.addEventListener('keypress', guessLetter);
-
-function guessLetter(keyPressed) {
-    var letterGuessed = keyPressed.key;
-    console.log(correctWord);
-
+document.onkeyup = function (event) {
+    var letterGuessed = event.key;
     // Only runs if a letter key is pressed
     if (characters.includes(letterGuessed)) {
         // If letter guessed is not in the answer
@@ -40,12 +36,11 @@ function guessLetter(keyPressed) {
         }
         printStats();
     }
-    if (correctGuesses === correctWord){ // If user completes the word, increment wins, reset game
+    if (correctGuesses === correctWord) { // If user completes the word, increment wins, reset game
         wins++;
         resetGame();
-        correctGuesses = getWordBlanks(correctWord);
-        printStats();
     }
+
 }
 
 function printStats() {
@@ -53,7 +48,7 @@ function printStats() {
     var wordText = document.getElementById("word");
     var letter = keyPressed.key;
 
-    // console.log(correctGuesses);
+
     wordText.innerHTML = formatCorrectGuesses(correctGuesses);
 
     var winsText = document.getElementById("wins");
@@ -80,6 +75,8 @@ function resetGame() {
     guessesLeft = maxGuesses;
     lettersGuessed = [];
     correctWord = chooseRandomWord();
+    correctGuesses = getWordBlanks(correctWord);
+    printStats();
 }
 
 function getWordBlanks(word) {
@@ -90,9 +87,9 @@ function getWordBlanks(word) {
     return x;
 }
 
-function fillInBlanks(x, word){
-    for (i = 0; i < word.length; i++){
-        if (x === word[i]){ // If word contains letter, fill it in
+function fillInBlanks(x, word) {
+    for (i = 0; i < word.length; i++) {
+        if (x === word[i]) { // If word contains letter, fill it in
             console.log("correct");
             // correctGuesses[i] = x;
             correctGuesses = correctGuesses.substring(0, i) + x + correctGuesses.substring(i + 1)
@@ -100,7 +97,7 @@ function fillInBlanks(x, word){
     }
 }
 
-function formatCorrectGuesses(correctGuesses){
+function formatCorrectGuesses(correctGuesses) {
     var x = "";
     for (i = 0; i < correctGuesses.length; i++) {
         x += correctGuesses[i] + " ";
@@ -113,6 +110,6 @@ window.onload = function () {
     correctGuesses = getWordBlanks(correctWord);
 
     var wordText = document.getElementById("word");
-    wordText.innerHTML = formatCorrectGuesses(correctGuesses);    
+    wordText.innerHTML = formatCorrectGuesses(correctGuesses);
 };
 
