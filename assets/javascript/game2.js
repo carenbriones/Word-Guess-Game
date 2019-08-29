@@ -3,12 +3,7 @@ var characters = "abcdefghijklmnopqrstuvwxyz";
 
 // When the window first loads, display blanks for the correct word
 window.onload = function () {
-    game.correctWord = game.chooseRandomWord();
-    game.correctGuesses = game.getWordBlanks(game.correctWord);
-    console.log(game.correctGuesses);
-
-    var wordText = document.getElementById("word");
-    wordText.innerHTML = game.formatCorrectGuesses(game.correctGuesses);
+    game.resetGame();
 }
 
 document.onkeyup = function (event) {
@@ -18,7 +13,7 @@ document.onkeyup = function (event) {
     if (characters.includes(letterGuessed)) {
 
         // If letter guessed is not in the answer
-        if (!game.correctWord.includes(letterGuessed)) {
+        if (!game.correctWord.color.includes(letterGuessed)) {
 
             // If letter has not been guessed already
             if (game.lettersGuessed.indexOf(letterGuessed) === -1) {
@@ -39,7 +34,7 @@ document.onkeyup = function (event) {
     }
 
     // If user completes the word, increment wins, reset game
-    if (game.correctGuesses === game.correctWord) {
+    if (game.correctGuesses === game.correctWord.color) {
         game.wins++;
         game.resetGame();
     }
@@ -78,8 +73,32 @@ var game = {
     guessesLeft: MAX_GUESSES,
     lettersGuessed: [],
     correctGuesses: "",
-    wordBank: ["turquoise", "chartreuse", "scarlet", "magenta", "ivory", "sepia", "amber", "mahogany", "fuchsia", "lavender", "mulberry", "cerulean", "sapphire", "ebony", "indigo", "obsidian", "porcelain", "daffodil", "tangerine", "rouge", "mauve", "periwinkle", "amethyst", "eggplant", "cobalt", "pewter"],
-    correctWord: "",
+    correctWord: "", 
+    wordBank:[
+        {color: "turquoise", hex: "#8cded1"},
+        {color: "chartreuse", hex: "#DFFF00"},
+        {color: "scarlet", hex: "#FF2400"},
+        {color: "magenta", hex: "#ff00ff"},
+        {color: "sepia", hex: "#704214"},
+        {color: "amber", hex: "#ffbf00"},
+        {color: "mahogany", hex: "#c04000"},
+        {color: "lavender", hex: "#e6e6fa"},
+        {color: "mulberry", hex: "#c54b8c"},
+        {color: "cerulean", hex: "#007ba7"},
+        {color: "sapphire", hex: "#0f52ba"},
+        {color: "ebony", hex: "#282C34"},
+        {color: "indigo", hex: "#4B0082"},
+        {color: "obsidian", hex: "#000000"},
+        {color: "daffodil", hex: "#ffff31"},
+        {color: "tangerine", hex: "#f28500"},
+        {color: "rouge", hex: "#a94064"},
+        {color: "mauve", hex: "#b784a7"},
+        {color: "periwinkle", hex: "#CCCCFF"},
+        {color: "amethyst", hex: "#9966cc"},
+        {color: "eggplant", hex: "#614051"},
+        {color: "cobalt", hex: "#0047ab"},
+        {color: "pewter", hex: "#8e9294"}
+    ],
 
     //Retrieved from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
     chooseRandomWord: function () {
@@ -92,14 +111,17 @@ var game = {
         this.guessesLeft = MAX_GUESSES;
         this.lettersGuessed = [];
         this.correctWord = this.chooseRandomWord();
-        this.correctGuesses = this.getWordBlanks(this.correctWord);
+        this.correctGuesses = this.getWordBlanks(this.correctWord.color);
+
+        // Changes color of card message to color of correct word (as a hint for the user)
+        document.getElementById("message").style.color = this.correctWord.hex;
         printStats();
     },
 
     // Returns string of blanks the length of the correctWord
     getWordBlanks: function () {
         var x = "";
-        for (i = 0; i < this.correctWord.length; i++) {
+        for (i = 0; i < this.correctWord.color.length; i++) {
             x += "_";
         }
         return x;
@@ -107,8 +129,8 @@ var game = {
 
     // Fills in the corresponding blanks with the letter entered (x)
     fillInBlanks: function (x) {
-        for (i = 0; i < this.correctWord.length; i++) {
-            if (x === this.correctWord[i]) { // If word contains letter, fill it in
+        for (i = 0; i < this.correctWord.color.length; i++) {
+            if (x === this.correctWord.color[i]) { // If word contains letter, fill it in
                 this.correctGuesses = this.correctGuesses.substring(0, i) + x + this.correctGuesses.substring(i + 1)
             }
         }
