@@ -1,5 +1,7 @@
 const MAX_GUESSES = 10;
 var characters = "abcdefghijklmnopqrstuvwxyz";
+var correctAnswerSound = document.createElement("audio");
+correctAnswerSound.setAttribute("src", "assets/Correct-answer.mp3");
 
 // When the window first loads, display blanks for the correct word
 window.onload = function () {
@@ -37,6 +39,7 @@ document.onkeyup = function (event) {
     if (game.correctGuesses === game.correctWord.color) {
         game.wins++;
         game.resetGame();
+        correctAnswerSound.play();
     }
 }
 
