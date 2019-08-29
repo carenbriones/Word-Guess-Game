@@ -90,8 +90,6 @@ function getWordBlanks(word) {
 function fillInBlanks(x, word) {
     for (i = 0; i < word.length; i++) {
         if (x === word[i]) { // If word contains letter, fill it in
-            console.log("correct");
-            // correctGuesses[i] = x;
             correctGuesses = correctGuesses.substring(0, i) + x + correctGuesses.substring(i + 1)
         }
     }
