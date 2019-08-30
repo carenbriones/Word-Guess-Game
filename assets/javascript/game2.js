@@ -63,7 +63,7 @@ function printStats(keyPressed) {
 
     // Displays guesses so far
     var guessesSoFarText = document.getElementById("guesses-so-far");
-    guessesSoFarText.innerHTML = "Your guesses so far: " + game.lettersGuessed;
+    guessesSoFarText.innerHTML = "Your guesses so far: " + game.formatLettersGuessed();
 
 }
 
@@ -132,7 +132,7 @@ var game = {
 
     // Fills in the corresponding blanks with the letter entered (x)
     fillInBlanks: function (x) {
-        for (i = 0; i < this.correctWord.color.length; i++) {
+        for (var i = 0; i < this.correctWord.color.length; i++) {
             if (x === this.correctWord.color[i]) { // If word contains letter, fill it in
                 this.correctGuesses = this.correctGuesses.substring(0, i) + x + this.correctGuesses.substring(i + 1)
             }
@@ -142,8 +142,17 @@ var game = {
     // Formats string of blanks with spaces in between
     formatCorrectGuesses: function () {
         var x = "";
-        for (i = 0; i < this.correctGuesses.length; i++) {
+        for (var i = 0; i < this.correctGuesses.length; i++) {
             x += this.correctGuesses[i] + " ";
+        }
+        return x;
+    },
+    
+    // Formats the array of letters guessed into uppercase, spaced out letters
+    formatLettersGuessed: function() {
+        var x = "";
+        for (var i = 0; i < this.lettersGuessed.length; i++){
+            x += this.lettersGuessed[i].toUpperCase() + " ";
         }
         return x;
     }
